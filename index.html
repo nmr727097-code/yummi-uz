@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yummi UZ — Fast Food & Pizza</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --black:#0a0a0a;
+    --yellow:#FFD600;
+    --yellow-dark:#F0C200;
+    --white:#FFFFFF;
+    --gray:#1a1a1a;
+    --gray2:#222;
+    --text-muted:#aaa;
+  }
+  body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;}
+
+  /* HEADER */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--black);
+    border-bottom:2px solid var(--yellow);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 24px;height:64px;
+  }
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .logo-icon{width:42px;height:42px;background:var(--yellow);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+  .logo-icon svg{width:28px;height:28px;}
+  .logo-text{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--white);}
+  .logo-text span{color:var(--yellow);}
+  .header-phone{
+    display:flex;align-items:center;gap:8px;
+    background:var(--yellow);color:var(--black);
+    padding:8px 16px;border-radius:6px;
+    font-weight:700;font-size:15px;text-decoration:none;
+  }
+  .header-phone:hover{background:var(--yellow-dark);}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg, #0a0a0a 0%, #1a1a00 50%, #0a0a0a 100%);
+    padding:56px 24px 40px;
+    text-align:center;
+    border-bottom:1px solid #222;
+  }
+  .hero h1{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(48px,8vw,96px);
+    letter-spacing:4px;
+    line-height:1;
+    color:var(--yellow);
+    text-shadow:0 0 40px rgba(255,214,0,0.3);
+  }
+  .hero p{color:#ccc;font-size:18px;margin-top:12px;}
+  .hero-badges{display:flex;justify-content:center;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  .badge{background:var(--gray2);border:1px solid #333;padding:6px 16px;border-radius:20px;font-size:13px;color:#ccc;}
+
+  /* CATEGORY NAV */
+  .cat-nav{
+    position:sticky;top:64px;z-index:90;
+    background:var(--gray);
+    border-bottom:1px solid #333;
+    padding:0 16px;
+    overflow-x:auto;
+    display:flex;gap:4px;
+    scrollbar-width:none;
+  }
+  .cat-nav::-webkit-scrollbar{display:none;}
+  .cat-btn{
+    flex-shrink:0;
+    padding:14px 20px;
+    background:none;border:none;
+    color:#999;font-size:14px;font-weight:600;
+    cursor:pointer;border-bottom:3px solid transparent;
+    transition:.2s;white-space:nowrap;font-family:'Inter',sans-serif;
+  }
+  .cat-btn:hover{color:var(--yellow);}
+  .cat-btn.active{color:var(--yellow);border-bottom-color:var(--yellow);}
+
+  /* SECTIONS */
+  .menu-section{padding:40px 16px 16px;max-width:1100px;margin:0 auto;}
+  .section-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:36px;letter-spacing:2px;
+    color:var(--yellow);
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:20px;
+  }
+  .section-title .icon{font-size:32px;}
+
+  /* GRID */
+  .menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:16px;
+    margin-bottom:40px;
+  }
+
+  /* CARD */
+  .card{
+    background:var(--gray2);
+    border:1px solid #2a2a2a;
+    border-radius:12px;
+    padding:20px;
+    display:flex;flex-direction:column;
+    transition:border-color .2s, transform .15s;
+    position:relative;overflow:hidden;
+  }
+  .card:hover{border-color:var(--yellow);transform:translateY(-2px);}
+  .card-name{font-weight:700;font-size:16px;color:var(--white);margin-bottom:4px;}
+  .card-desc{font-size:13px;color:var(--text-muted);margin-bottom:14px;flex:1;}
+  .card-bottom{display:flex;align-items:center;justify-content:space-between;}
+  .card-price{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;letter-spacing:1px;
+    color:var(--yellow);
+  }
+  .card-price span{font-size:14px;color:#888;font-family:'Inter',sans-serif;font-weight:400;}
+  .btn-order{
+    background:var(--yellow);color:var(--black);
+    border:none;padding:8px 18px;border-radius:6px;
+    font-weight:700;font-size:13px;cursor:pointer;
+    transition:.15s;
+  }
+  .btn-order:hover{background:var(--yellow-dark);transform:scale(1.05);}
+  .new-badge{
+    position:absolute;top:10px;right:10px;
+    background:#ff3b3b;color:#fff;
+    font-size:11px;font-weight:700;
+    padding:3px 8px;border-radius:4px;
+    letter-spacing:.5px;
+  }
+
+  /* PIZZA special wide */
+  .pizza-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:16px;margin-bottom:40px;
+  }
+  .pizza-card{
+    background:linear-gradient(135deg,#1a0a00,#2a1a00);
+    border:1px solid #3a2a00;
+    border-radius:12px;padding:20px;
+    display:flex;align-items:center;gap:16px;
+    transition:.2s;
+  }
+  .pizza-card:hover{border-color:var(--yellow);transform:translateY(-2px);}
+  .pizza-emoji{font-size:52px;flex-shrink:0;}
+  .pizza-info{flex:1;}
+  .pizza-info .card-name{font-size:17px;}
+  .pizza-card .card-price{font-size:30px;}
+
+  /* DRINKS row */
+  .drinks-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:12px;margin-bottom:40px;
+  }
+  .drink-card{
+    background:var(--gray2);border:1px solid #2a2a2a;
+    border-radius:10px;padding:16px;text-align:center;
+    transition:.2s;
+  }
+  .drink-card:hover{border-color:var(--yellow);}
+  .drink-card .icon{font-size:36px;margin-bottom:8px;}
+  .drink-card .card-name{font-size:14px;}
+  .drink-card .card-price{font-size:22px;}
+
+  /* CART BUTTON */
+  .cart-fab{
+    position:fixed;bottom:24px;right:24px;z-index:200;
+    background:var(--yellow);color:var(--black);
+    border:none;border-radius:50px;
+    padding:14px 22px;
+    font-weight:700;font-size:15px;
+    cursor:pointer;box-shadow:0 4px 20px rgba(255,214,0,.4);
+    display:flex;align-items:center;gap:8px;
+    transition:.2s;
+  }
+  .cart-fab:hover{background:var(--yellow-dark);transform:scale(1.05);}
+  .cart-count{
+    background:var(--black);color:var(--yellow);
+    border-radius:50%;width:22px;height:22px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:900;
+  }
+
+  /* MODAL */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:300;
+    background:rgba(0,0,0,.85);
+    align-items:center;justify-content:center;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--gray2);border:1px solid #333;
+    border-radius:16px;width:90%;max-width:480px;
+    padding:28px;max-height:90vh;overflow-y:auto;
+  }
+  .modal h2{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow);margin-bottom:16px;}
+  .cart-item{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid #333;
+  }
+  .cart-item-name{font-size:14px;font-weight:600;}
+  .cart-item-price{color:var(--yellow);font-weight:700;}
+  .cart-item-qty{display:flex;align-items:center;gap:8px;}
+  .qty-btn{
+    background:#333;border:none;color:var(--white);
+    width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:16px;
+  }
+  .qty-btn:hover{background:var(--yellow);color:var(--black);}
+  .cart-total{
+    margin-top:16px;text-align:right;
+    font-family:'Bebas Neue',sans-serif;font-size:24px;
+    color:var(--yellow);
+  }
+  .modal-close{
+    background:none;border:1px solid #444;color:#aaa;
+    padding:8px 16px;border-radius:6px;cursor:pointer;margin-right:8px;
+  }
+  .modal-close:hover{border-color:#aaa;}
+  .btn-checkout{
+    background:var(--yellow);color:var(--black);
+    border:none;padding:12px 24px;border-radius:8px;
+    font-weight:700;font-size:15px;cursor:pointer;
+  }
+  .btn-checkout:hover{background:var(--yellow-dark);}
+  .empty-cart{color:#666;text-align:center;padding:24px 0;}
+
+  /* ORDER MODAL */
+  .order-form label{display:block;margin-bottom:6px;font-size:14px;color:#aaa;}
+  .order-form input{
+    width:100%;background:#111;border:1px solid #333;color:#fff;
+    padding:10px 14px;border-radius:6px;font-size:14px;margin-bottom:14px;
+    font-family:'Inter',sans-serif;
+  }
+  .order-form input:focus{outline:none;border-color:var(--yellow);}
+  .success-msg{
+    text-align:center;padding:20px 0;
+  }
+  .success-msg .check{font-size:56px;margin-bottom:12px;}
+  .success-msg h3{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow);}
+  .success-msg p{color:#aaa;margin-top:8px;}
+
+  /* DIVIDER */
+  .divider{height:1px;background:#1e1e1e;margin:0 16px 0;}
+
+  /* FOOTER */
+  footer{
+    background:var(--gray);border-top:2px solid var(--yellow);
+    padding:32px 24px;text-align:center;margin-top:40px;
+  }
+  footer .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--yellow);letter-spacing:3px;}
+  footer p{color:#666;font-size:14px;margin-top:8px;}
+  footer a{color:var(--yellow);text-decoration:none;}
+
+  @media(max-width:600px){
+    .header-phone span.phone-text{display:none;}
+    .hero h1{font-size:48px;}
+    .menu-grid{grid-template-columns:1fr 1fr;}
+    .pizza-grid{grid-template-columns:1fr;}
+    .drinks-row{grid-template-columns:repeat(3,1fr);}
+  }
+  @media(max-width:400px){
+    .menu-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect x="2" y="10" width="24" height="3" rx="1.5" fill="#0a0a0a"/>
+        <rect x="2" y="15" width="24" height="3" rx="1.5" fill="#0a0a0a"/>
+        <rect x="6" y="5" width="16" height="3" rx="1.5" fill="#0a0a0a"/>
+        <rect x="4" y="20" width="20" height="3" rx="1.5" fill="#0a0a0a"/>
+      </svg>
+    </div>
+    <div class="logo-text">YUMMI <span>UZ</span></div>
+  </a>
+  <a href="tel:331701111" class="header-phone">
+    📞 <span class="phone-text">(33) 170 11 11</span>
+  </a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>YUMMI UZ</h1>
+  <p>Tez va mazali — Fast Food, Pizza, Burger, Shashliq</p>
+  <div class="hero-badges">
+    <span class="badge">🚀 Tez yetkazib berish</span>
+    <span class="badge">🔥 Yangi retseptlar</span>
+    <span class="badge">⭐ Xizmat 8%</span>
+  </div>
+</div>
+
+<!-- CATEGORY NAV -->
+<nav class="cat-nav" id="catNav">
+  <button class="cat-btn active" onclick="scrollTo('lavash')">🫔 Lavash</button>
+  <button class="cat-btn" onclick="scrollTo('burger')">🍔 Burger</button>
+  <button class="cat-btn" onclick="scrollTo('nonburger')">🥖 Nonburger</button>
+  <button class="cat-btn" onclick="scrollTo('hotdog')">🌭 Hot-dog</button>
+  <button class="cat-btn" onclick="scrollTo('chicken')">🍗 Chicken</button>
+  <button class="cat-btn" onclick="scrollTo('shashlik')">🍢 Shashliq</button>
+  <button class="cat-btn" onclick="scrollTo('stripsi')">🍟 Stripsi</button>
+  <button class="cat-btn" onclick="scrollTo('pizza')">🍕 Pizza</button>
+  <button class="cat-btn" onclick="scrollTo('drinks')">☕ Ichimliklar</button>
+</nav>
+
+<!-- LAVASH -->
+<div id="lavash" class="menu-section">
+  <div class="section-title"><span class="icon">🫔</span> Lavash</div>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="card-name">Standart Lavash</div>
+      <div class="card-desc">Klassik go'shtli lavash</div>
+      <div class="card-bottom">
+        <div class="card-price">34.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Standart Lavash',34000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Pishlooli Lavash</div>
+      <div class="card-desc">Go'sht va pishloq bilan</div>
+      <div class="card-bottom">
+        <div class="card-price">36.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Pishlooli Lavash',36000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Tandir Lavash</div>
+      <div class="card-desc">Tandirda pishirilgan</div>
+      <div class="card-bottom">
+        <div class="card-price">35.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Tandir Lavash',35000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Qalampir Lavash</div>
+      <div class="card-desc">Achchiq qalampir bilan</div>
+      <div class="card-bottom">
+        <div class="card-price">34.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Qalampir Lavash',34000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="new-badge">NEW</div>
+      <div class="card-name">Lavash Kebab</div>
+      <div class="card-desc">Kebabli yangi lavash</div>
+      <div class="card-bottom">
+        <div class="card-price">35.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Lavash Kebab',35000)">+ Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- BURGER -->
+<div id="burger" class="menu-section">
+  <div class="section-title"><span class="icon">🍔</span> Burger</div>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="card-name">Gamburger</div>
+      <div class="card-desc">Klassik burger</div>
+      <div class="card-bottom">
+        <div class="card-price">28.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Gamburger',28000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Chizburger</div>
+      <div class="card-desc">Pishloqli burger</div>
+      <div class="card-bottom">
+        <div class="card-price">30.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Chizburger',30000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Bigburger</div>
+      <div class="card-desc">Katta va to'yimli burger</div>
+      <div class="card-bottom">
+        <div class="card-price">38.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Bigburger',38000)">+ Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- NONBURGER -->
+<div id="nonburger" class="menu-section">
+  <div class="section-title"><span class="icon">🥖</span> Nonburger</div>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="card-name">Nonburger</div>
+      <div class="card-desc">Nondan tayyorlangan burger</div>
+      <div class="card-bottom">
+        <div class="card-price">28.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Nonburger',28000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Nonburger Mini</div>
+      <div class="card-desc">Kichik nonburger</div>
+      <div class="card-bottom">
+        <div class="card-price">25.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Nonburger Mini',25000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Turk Kabob</div>
+      <div class="card-desc">Turk uslubida kabob</div>
+      <div class="card-bottom">
+        <div class="card-price">27.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Turk Kabob',27000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Haggi</div>
+      <div class="card-desc">Maxsus nonburger</div>
+      <div class="card-bottom">
+        <div class="card-price">34.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Haggi',34000)">+ Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- HOT-DOG -->
+<div id="hotdog" class="menu-section">
+  <div class="section-title"><span class="icon">🌭</span> Hot-dog</div>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="card-name">Hot-dog Canada (kichik)</div>
+      <div class="card-desc">Klassik kanada hot-dogi</div>
+      <div class="card-bottom">
+        <div class="card-price">12.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Canada (kichik)',12000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Hot-dog Canada (katta)</div>
+      <div class="card-desc">Katta kanada hot-dogi</div>
+      <div class="card-bottom">
+        <div class="card-price">14.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Canada (katta)',14000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Supper Canada</div>
+      <div class="card-desc">Super katta kanada</div>
+      <div class="card-bottom">
+        <div class="card-price">16.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Supper Canada',16000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Hot-dog Halapeno</div>
+      <div class="card-desc">Achchiq halapeno bilan</div>
+      <div class="card-bottom">
+        <div class="card-price">19.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Halapeno',19000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Hot-dog Mushrom</div>
+      <div class="card-desc">Qo'ziqorinli hot-dog</div>
+      <div class="card-bottom">
+        <div class="card-price">19.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Mushrom',19000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Big Hot-dog</div>
+      <div class="card-desc">Eng katta hot-dog</div>
+      <div class="card-bottom">
+        <div class="card-price">20.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Big Hot-dog',20000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Hot-dog Qazi</div>
+      <div class="card-desc">Qazi go'shti bilan</div>
+      <div class="card-bottom">
+        <div class="card-price">33.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Qazi',33000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Hot-dog Achchio</div>
+      <div class="card-desc">Achchio go'shti bilan</div>
+      <div class="card-bottom">
+        <div class="card-price">33.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Hot-dog Achchio',33000)">+ Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- CHICKEN FOOD -->
+<div id="chicken" class="menu-section">
+  <div class="section-title"><span class="icon">🍗</span> Chicken Food</div>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="card-name">Bigger</div>
+      <div class="card-desc">Katta tovuq burger</div>
+      <div class="card-bottom">
+        <div class="card-price">23.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Bigger',23000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Longer</div>
+      <div class="card-desc">Uzun tovuq burger</div>
+      <div class="card-bottom">
+        <div class="card-price">20.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Longer',20000)">+ Buyurtma</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">Twister</div>
+      <div class="card-desc">Tovuqli twister roll</div>
+      <div class="card-bottom">
+        <div class="card-price">27.000 <span>so'm</span></div>
+        <button class="btn-order" onclick="addToCart('Twister',27000)">+ Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- SHASHLIK -->
+<div id="shashlik" class="menu-sec
